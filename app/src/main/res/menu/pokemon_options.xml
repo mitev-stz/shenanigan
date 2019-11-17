@@ -5,9 +5,12 @@
         android:title="Create Pokemon"/>
     <item
         android:id="@+id/show_pokemon_deteils"
-        android:title="Show Pokemon Deteils"/>
+        android:title="Show Pokemon Details"/>
 
     <item
         android:id="@+id/delete_pokemon"
         android:title="Delete Pokemon"/>
+    <item
+        android:id="@+id/swap_pokemon"
+        android:title="Swap Pokemon with..."/>
 </menu>

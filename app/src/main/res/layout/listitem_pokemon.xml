@@ -21,8 +21,8 @@
             android:gravity="start|center"
             android:padding="8dp"
             app:layout_constraintBottom_toTopOf="@id/trainerText"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/pokemonType"
@@ -83,12 +83,17 @@
 
         <TextView
             android:id="@+id/textViewOptions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_width="406dp"
+            android:layout_height="68dp"
             android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginStart="7dp"
             android:text="&#8942;"
             android:textAppearance="?android:textAppearanceLarge"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/pokemonName"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

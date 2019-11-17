@@ -57,15 +57,12 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         swapsList = findViewById(R.id.swapsList);
         competitionsList = findViewById(R.id.competitionsList);
         pokemonName = findViewById(R.id.pokemonName);
-        pokemonName.setText(pokemon.getName());
         pokemonType = findViewById(R.id.pokemonType);
         pokemonNumber = findViewById(R.id.pokemonNumber);
         pokemonTrainer = findViewById(R.id.pokemonTrainer);
-        pokemonType.setText(pokemon.getType().toString());
-        pokemonNumber.setText(""+ pokemon.getId());
-        pokemonTrainer.setText(pokemon.getTrainer().toString());
-        swapAdapter = new SwapAdapter(this, pokemon.getSwaps());
-        competitionAdapter = new CompetitionAdapter(this, pokemon.getCompetitions());
+
+        swapAdapter = new SwapAdapter(this, pokemon);
+        competitionAdapter = new CompetitionAdapter(this, pokemon);
         final RecyclerView.LayoutManager manager = RecyclerViewUtil.createLayoutManager(this);
         final RecyclerView.LayoutManager manager1 = RecyclerViewUtil.createLayoutManager(this);
         swapsList.setLayoutManager(manager);
@@ -74,6 +71,10 @@ public class PokemonDetailsActivity extends AppCompatActivity {
         competitionsList.setLayoutManager(manager1);
         competitionsList.setAdapter(competitionAdapter);
 
+        pokemonName.setText(pokemon.getName());
+        pokemonType.setText(pokemon.getType().toString());
+        pokemonNumber.setText(""+ pokemon.getId());
+        pokemonTrainer.setText(pokemon.getTrainer().toString());
         disableEditText(pokemonName);
         disableEditText(pokemonType);
 
@@ -101,11 +102,6 @@ public class PokemonDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-
-
-//                if (pokemonType.getText().toString().equals(Type.WATER.toString())  || pokemonType.getText().toString().equals(Type.FIRE.toString()) || pokemonType.getText().toString().equals(Type.POISON.toString())){
-//                    intent.putExtra("NewType",pokemonType.getText().toString());
-//                }
                 intent.putExtra("ID",pokemon.getId());
                 intent.putExtra("NewName",pokemonName.getText().toString());
                 intent.putExtra("NewType",pokemonType.getText().toString());

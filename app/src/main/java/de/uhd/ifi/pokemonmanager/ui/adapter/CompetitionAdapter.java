@@ -13,12 +13,13 @@ import java.util.List;
 
 import de.uhd.ifi.pokemonmanager.R;
 import de.uhd.ifi.pokemonmanager.data.Competition;
+import de.uhd.ifi.pokemonmanager.data.Pokemon;
 import de.uhd.ifi.pokemonmanager.data.Swap;
 
 public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionHolder> {
     private LayoutInflater inflater;
-    private List<Competition> originalData1;
-    public CompetitionAdapter(Context context, List<Competition> swaps){
+    private Pokemon originalData1;
+    public CompetitionAdapter(Context context, Pokemon swaps){
         this.originalData1 = swaps;
         this.inflater = LayoutInflater.from(context);
 
@@ -32,12 +33,12 @@ public class CompetitionAdapter extends RecyclerView.Adapter<CompetitionHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull CompetitionHolder holder, int position) {
-        holder.setCompetition(originalData1.get(position));
+        holder.setCompetition(originalData1.getCompetitions().get(position), originalData1);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return originalData1.getCompetitions().size();
     }
 
 }
@@ -53,10 +54,16 @@ class CompetitionHolder extends RecyclerView.ViewHolder {
         swapDate = itemView.findViewById(R.id.swapDate);
         itemView.setTag(this);
     }
-    public void setCompetition(Competition compet){
+    public void setCompetition(Competition compet, Pokemon origin){
+
         if(compet!=null){
-            swapId.setText(compet.getId());
             swapDate.setText(compet.getDate().toString());
+            if(!compet.getWinner().equals(origin)){
+                swapId.setText("Competition lost against: " + compet.getWinner().getName() + " " + compet.getWinner().getTrainer().toString());
+            } else {
+                swapId.setText("Competition lost against: " + compet.getLoser().getName() + " " + compet.getLoser().getTrainer().toString());
+            }
+
         }
     }
 

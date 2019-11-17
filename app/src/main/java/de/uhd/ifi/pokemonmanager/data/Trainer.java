@@ -43,7 +43,13 @@ public class Trainer implements Parcelable, Serializable {
 
     private Trainer(final Parcel in) {
         this.id = in.readInt();
-        //TODO other attributes
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        int[] arr = new int[pokemonIds.size()];
+        in.readIntArray(arr);
+        for(int i=0;i<arr.length;i++){
+            pokemonIds.set(i,arr[i]);
+        }
     }
 
     public int getId() {
@@ -71,6 +77,7 @@ public class Trainer implements Parcelable, Serializable {
             pokemon.setTrainer(this);
             this.pokemonIds.add(pokemon.getId());
         }
+
     }
 
     public void removePokemon(Pokemon pokemon) {
@@ -130,6 +137,13 @@ public class Trainer implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        //TODO
+        dest.writeInt(id);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        int[] arr = new int[pokemonIds.size()];
+        for (int i=0;i<pokemonIds.size();i++) {
+            arr[i] = pokemonIds.get(i);
+        }
+        dest.writeIntArray(arr);
     }
 }

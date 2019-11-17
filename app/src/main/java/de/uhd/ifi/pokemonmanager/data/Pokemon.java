@@ -107,7 +107,7 @@ public class Pokemon implements Parcelable, Serializable {
     }
 
     public List<Swap> getSwaps() {
-        final List<Swap> list = new ArrayList<>();
+        List<Swap> list = new ArrayList<>();
         final SerialStorage serialStorage = SerialStorage.getInstance();
 
         for (final String swapId : swapIds) {

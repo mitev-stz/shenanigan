@@ -4,6 +4,8 @@ import android.os.Parcel;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -11,7 +13,12 @@ public class Competition extends Swap {
     public static final Creator<Competition> CREATOR = new Creator<Competition>() {
         @Override
         public Competition createFromParcel(Parcel parcel) {
-            return new Competition(parcel);
+            try {
+                return new Competition(parcel);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         @Override
@@ -25,11 +32,12 @@ public class Competition extends Swap {
     private int loserId;
 
     public Competition() {
-
+        super();
+//        super(sourcePokemon,targetPokemon);
     }
 
-    private Competition(final Parcel in) {
-        //TODO
+    private Competition(final Parcel in) throws ParseException {
+        super(in);
     }
     @Override
     public void execute(Pokemon sourcePokemon, Pokemon targetPokemon) {
@@ -83,6 +91,11 @@ public class Competition extends Swap {
     }
 
     public void writeToParcel(final Parcel dest, int flags) {
-        //TODO
+        dest.writeInt(sourcePokemonId);
+        dest.writeInt(targetPokemonId);
+        dest.writeInt(sourceTrainerId);
+        dest.writeInt(targetTrainerId);
+        String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
+        dest.writeString(time);
     }
 }

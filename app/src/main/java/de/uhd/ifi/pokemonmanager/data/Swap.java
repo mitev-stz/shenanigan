@@ -5,6 +5,8 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.uhd.ifi.pokemonmanager.storage.SerialStorage;
@@ -14,7 +16,12 @@ public class Swap implements Parcelable, Serializable {
     public static final Creator<Swap> CREATOR = new Creator<Swap>() {
         @Override
         public Swap createFromParcel(Parcel parcel) {
-            return new Swap(parcel);
+            try {
+                return new Swap(parcel);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
         @Override
@@ -34,11 +41,22 @@ public class Swap implements Parcelable, Serializable {
 
 
     public Swap() {
-
+//        sourcePokemonId = sourcePokemon.getId();
+//        targetPokemonId = targetPokemon.getId();
+//        sourceTrainerId = sourcePokemon.getTrainer().getId();
+//        targetTrainerId = targetPokemon.getTrainer().getId();
+//        date = new Date(System.currentTimeMillis());
+//        id = sourcePokemon.getName() + targetPokemon + date.toString();
     }
 
-    protected Swap(final Parcel in) {
-        //TODO
+    protected Swap(final Parcel in) throws ParseException {
+        sourcePokemonId = in.readInt();
+        targetPokemonId = in.readInt();
+        sourceTrainerId = in.readInt();
+        targetTrainerId = in.readInt();
+        SimpleDateFormat time = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        date = time.parse(in.readString());
+        id = in.readString();
     }
 
     public void execute(Pokemon sourcePokemon, Pokemon targetPokemon) {
@@ -69,12 +87,12 @@ public class Swap implements Parcelable, Serializable {
         this.sourceTrainerId = sourceTrainer.getId();
         this.targetTrainerId = targetTrainer.getId();
         this.date = new Date();
-        this.id = "" + System.currentTimeMillis();
+        this.id =  "" + System.currentTimeMillis();
         targetTrainer.addPokemon(sourcePokemon);
         sourceTrainer.addPokemon(targetPokemon);
         sourcePokemon.addSwap(this);
         targetPokemon.addSwap(this);
-
+//        "Swap id: "+sourcePokemon.getName()+ " and " +targetPokemon.getName()+" swapped on "
     }
 
     public Date getDate() {
@@ -108,6 +126,12 @@ public class Swap implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        //TODO
+        dest.writeInt(sourcePokemonId);
+        dest.writeInt(targetPokemonId);
+        dest.writeInt(sourceTrainerId);
+        dest.writeInt(targetTrainerId);
+        String time = new SimpleDateFormat("yyyyMMdd_HHmmss").format(date);
+        dest.writeString(time);
+        dest.writeString(id);
     }
 }

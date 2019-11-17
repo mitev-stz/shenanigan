@@ -13,7 +13,9 @@ import android.widget.Toast;
 import java.util.List;
 
 import de.uhd.ifi.pokemonmanager.R;
+import de.uhd.ifi.pokemonmanager.data.Competition;
 import de.uhd.ifi.pokemonmanager.data.Pokemon;
+import de.uhd.ifi.pokemonmanager.data.Swap;
 import de.uhd.ifi.pokemonmanager.data.Trainer;
 import de.uhd.ifi.pokemonmanager.data.Type;
 import de.uhd.ifi.pokemonmanager.storage.SerialStorage;
@@ -37,7 +39,6 @@ public class MainActivity extends AppCompatActivity implements ForItemOptionsLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         pokemonList = findViewById(R.id.pokemonList);
-
         setupList();
     }
 
@@ -46,9 +47,7 @@ public class MainActivity extends AppCompatActivity implements ForItemOptionsLis
     private void setupList() {
         data = STORAGE.getAllPokemon();
         pokemonAdapter = new PokemonAdapter(this, data,this);
-
         final RecyclerView.LayoutManager manager = RecyclerViewUtil.createLayoutManager(this);
-
         pokemonList.setLayoutManager(manager);
         pokemonList.setAdapter(pokemonAdapter);
     }
@@ -74,6 +73,14 @@ public class MainActivity extends AppCompatActivity implements ForItemOptionsLis
             STORAGE.update(t1);
             STORAGE.update(t2);
             STORAGE.saveAll(this);
+
+            Swap s1 = new Swap();
+            s1.execute(p1, p3);
+            Competition c = new Competition();
+            c.execute(p1, p3);
+            STORAGE.update(s1);
+            STORAGE.update(c);
+            STORAGE.saveAll(this);
         }
     }
 
@@ -90,9 +97,6 @@ public class MainActivity extends AppCompatActivity implements ForItemOptionsLis
     @Override
     protected void onResume() {
         super.onResume();
-
-
-
         STORAGE.loadAll(this);
         createSampleDataIfNecessary();
         pokemonAdapter.refresh();

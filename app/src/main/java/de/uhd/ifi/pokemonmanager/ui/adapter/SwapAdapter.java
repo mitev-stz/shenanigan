@@ -9,16 +9,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import de.uhd.ifi.pokemonmanager.R;
+import de.uhd.ifi.pokemonmanager.data.Pokemon;
 import de.uhd.ifi.pokemonmanager.data.Swap;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 
-public class SwapAdapter extends RecyclerView.Adapter<SwapHolder> {
+public class SwapAdapter extends Adapter<SwapHolder> {
 
     private LayoutInflater inflater;
-    private List<Swap> originalData1;
-    public SwapAdapter(Context context,List<Swap> swaps){
+    private Pokemon originalData1;
+
+
+    public SwapAdapter(Context context,Pokemon swaps){
         this.originalData1 = swaps;
         this.inflater = LayoutInflater.from(context);
 
@@ -32,12 +38,12 @@ public class SwapAdapter extends RecyclerView.Adapter<SwapHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull SwapHolder holder, int position) {
-        holder.setSwap(originalData1.get(position));
+        holder.setSwap(originalData1.getSwaps().get(position), originalData1);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return originalData1.getSwaps().size();
     }
 
 }
@@ -53,10 +59,17 @@ class SwapHolder extends RecyclerView.ViewHolder {
         swapDate = itemView.findViewById(R.id.swapDate);
         itemView.setTag(this);
     }
-    public void setSwap(Swap swap){
-        if(swap!=null){
-            swapId.setText(swap.getId());
-            swapDate.setText(swap.getDate().toString());
+    public void setSwap(Swap swap, Pokemon origin) {
+        if (swap != null) {
+            long l = Long.parseLong(swap.getId());
+            SimpleDateFormat formatter = new SimpleDateFormat("MMM dd, yyyy HH:mm");
+            Date res = new Date(l);
+            swapDate.setText("Date: " + swap.getDate().toString());
+            if (!swap.getSourcePokemon().equals(origin)) {
+                swapId.setText("With: " + swap.getSourcePokemon().getName() + " " + swap.getSourcePokemon().getTrainer().toString());
+            } else {
+                swapId.setText("With: " + swap.getTargetPokemon().getName() + " " + swap.getTargetPokemon().getTrainer().toString());
+            }
         }
     }
 }
